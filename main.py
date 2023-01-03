@@ -1,8 +1,25 @@
+import random
 from tkinter import *
+import pandas as pd
 
 BACKGROUND_COLOR = "#B1DDC6"
 FONT_TITLE = ("Ariel", 40, "italic")
 FONT_WORD = ("Ariel", 60, "bold")
+
+
+def right_clicked():
+    word = random.choice(words)
+    word_fr = word["French"]
+    canvas.itemconfig(title_text, text="French")
+    canvas.itemconfig(word_text, text=word_fr)
+
+
+def wrong_clicked():
+    word = random.choice(words)
+    word_fr = word["French"]
+    canvas.itemconfig(title_text, text="French")
+    canvas.itemconfig(word_text, text=word_fr)
+
 
 window = Tk()
 window.title("Flashy")
@@ -16,11 +33,14 @@ word_text = canvas.create_text(400, 263, text="Word", fill="black", font=FONT_WO
 canvas.grid(column=0, row=0, columnspan=2)
 
 right_button_img = PhotoImage(file="images/right.png")
-right_button = Button(image=right_button_img, bg=BACKGROUND_COLOR, relief="flat")
+right_button = Button(image=right_button_img, bg=BACKGROUND_COLOR, relief="flat", command=right_clicked)
 right_button.grid(column=1, row=1)
 
 wrong_button_img = PhotoImage(file="images/wrong.png")
-wrong_button = Button(image=wrong_button_img, bg=BACKGROUND_COLOR, relief="flat")
+wrong_button = Button(image=wrong_button_img, bg=BACKGROUND_COLOR, relief="flat", command=wrong_clicked)
 wrong_button.grid(column=0, row=1)
+
+words = pd.read_csv("data/french_words.csv").to_dict(orient="records")
+print(type(words))
 
 window.mainloop()
